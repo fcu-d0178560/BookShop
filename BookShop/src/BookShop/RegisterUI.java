@@ -9,7 +9,7 @@ public class RegisterUI extends UI {
 		Boolean result = false;
 		int number = 0;
 		showResult("請選擇要使用的功能：");
-		showResult("1.登入 2.註冊 0.回上頁");
+		showResult("1.登入 2.註冊 3.修改聯絡資訊 0.回上頁");
 		String input = getInput().trim();
 		try{
 			number = Integer.valueOf(input);
@@ -29,11 +29,15 @@ public class RegisterUI extends UI {
 			showResult("請輸入手機號碼：");
 			String phonenumber = getInput().trim();
 			result = controller.register(account,password,phonenumber);
+		}else if(number==3){
+			showResult("請輸入新的手機號碼：");
+			String phone = getInput().trim();
+			result = controller.modifyPhone(phone);
+			if(result==false) showResult("修改聯絡資訊失敗，與儲存資訊相同。");
 		}else if(number==Constant.MAIN){
 			controller.switchUI(number);
 		}else{
 			showResult("輸入錯誤，請重新輸入。");
-			display();
 		}
 		
 		if(result==true){

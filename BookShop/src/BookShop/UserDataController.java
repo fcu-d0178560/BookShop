@@ -35,12 +35,15 @@ public class UserDataController {
 		result = true;
 		return result;
 	}
-	public Boolean modify (String account,String phonenumber){ // modify User contact info
+	public Boolean modifyPhone (String account,String phonenumber){ // modify User contact info
 		Boolean result = true;
 		for(int i=0;i<user.size();i++){
 			if(user.get(i).getAccount().equals(account)){
-				user.get(i).setPhone(phonenumber);
-				return result;
+				if(!user.get(i).getPhone().equals(phonenumber)){
+					user.get(i).setPhone(phonenumber);
+					return result;
+				}
+				break;
 			}
 		}
 		result = false;

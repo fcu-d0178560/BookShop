@@ -19,6 +19,15 @@ public class ProductController {
 		this.serial += 1;
 		return serial;
 	}
+	public void showProduct(){
+		controller.showResult("商品訊息：");
+		for(int i=0;i<product.size();i++){
+			String pid = product.get(i).getPid();
+			String pname = product.get(i).getPname();
+			String result = Constant.DELIMITER+"PID:"+pid+Constant.DELIMITER+"商品名稱:"+pname+Constant.DELIMITER;
+			controller.showResult(result);
+		}
+	}
 	public void addProduct(String account,String pname){ // need account and product name to create product
 		String pid = controller.getTime()+getSerial();
 		product.add(new Product(pid,pname,account));
@@ -32,9 +41,21 @@ public class ProductController {
 		}
 	}
 	public void checkProduct(String account){
+		controller.showResult("商品訊息：");
 		for(int i=0;i<product.size();i++){
 			if(product.get(i).getAccount().equals(account)){
-				// check if there is product belong this account
+				String pid = product.get(i).getPid();
+				String pname = product.get(i).getPname();
+				controller.showResult(Constant.DELIMITER+"商品編號："+pid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER);
+			}
+		}
+	}
+	public void checkOrder(String account){
+		controller.showResult("訂單資訊：");
+		for(int i=0;i<product.size();i++){
+			if(product.get(i).getAccount().equals(account)){
+				String pid = product.get(i).getPid();
+				controller.checkOrder(pid);
 			}
 		}
 	}

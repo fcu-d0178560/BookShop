@@ -34,29 +34,61 @@ public class OrderController {
 			}
 		}
 	}
-	public void showOrder (String pid){
+	public void showOrder (String account){	// show order
+		controller.showResult("訂單訊息：");
 		for(int i=0;i<order.size();i++){
-			if(order.get(i).getPid().equals(pid)){
-				// show order
-			}
-		}
-		for(int i=0;i<acceptorder.size();i++){
-			if(acceptorder.get(i).getPid().equals(pid)){
-				// show order
+			if(order.get(i).getAccount().equals(account)){
+				if(order.get(i).getAccount().equals(account)){
+					String oid = order.get(i).getOid();
+					String pname = controller.getPname(acceptorder.get(i).getPid());
+					controller.showResult(Constant.DELIMITER+"訂單編號："+oid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER);
+				}
 			}
 		}
 	}
-	public void checkOrder (String account){ // check if there is order belong this account
+	public void checkOrder(String pid){
 		for(int i=0;i<order.size();i++){
-			if(order.get(i).getAccount().equals(account)){
-				// show order
+			if(order.get(i).getPid().equals(pid)){
+				String oid = order.get(i).getOid();
+				String pname = controller.getPname(pid);
+				String account = order.get(i).getAccount();
+				controller.showResult(Constant.DELIMITER+"訂單編號："+oid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER+"訂貨人："+account+Constant.DELIMITER);
+			}
+		}
+	}
+	public void cancelOrder(String oid){
+		for(int i=0;i<order.size();i++){
+			if(order.get(i).getOid().equals(oid)){
+				order.remove(i);
+				break;
+			}
+		}
+	}
+	public void checkAcceptOrder(String account){ // check if there is order belong this account
+		controller.showResult("交易資訊：");
+		for(int i=0;i<acceptorder.size();i++){
+			if(acceptorder.get(i).getAccount().equals(account)){
+				String pname = controller.getPname(acceptorder.get(i).getPid());
+				String phone = controller.getPhone(acceptorder.get(i).getAccount());
+				controller.showResult(Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER+"連絡資訊："+phone+Constant.DELIMITER);
+			}
+		}
+	}
+	public Order getOrder(String oid){
+		Order target = null;
+		for(int i=0;i<order.size();i++){
+			if(order.get(i).getOid().equals(oid)){
+				target = order.get(i);
+				return target;
 			}
 		}
 		for(int i=0;i<acceptorder.size();i++){
-			if(acceptorder.get(i).getAccount().equals(account)){
-				// show order
+			if(acceptorder.get(i).getOid().equals(oid)){
+				target = order.get(i);
+				return target;
 			}
 		}
+		return target;
 	}
 	public void finishOrder (String oid){ // finish the order to make sure the trade is success
 		for(int i=0;i<acceptorder.size();i++){

@@ -8,21 +8,26 @@ public class OrderUI extends UI {
 	public void display(){
 		int number = 0;
 		showResult("請選擇要使用的功能：");
-		showResult("1.登入 2.註冊 0.回上頁");
+		showResult("1.查看交易資訊 2.查看訂單 3.接受訂單 0.回上頁");
 		String input = getInput().trim();
 		try{
 			number = Integer.valueOf(input);
 		}catch(NumberFormatException e){ number = 999; }
 		
 		if(number==1){
-			
+			controller.checkAcceptOrder();
 		}else if(number==2){
-			
+			controller.checkPid();
+		}else if(number==3){
+			controller.checkPid();
+			showResult("請輸入要接受的訂單編號：");
+			String oid = getInput().trim();
+			controller.acceptOrder(oid);
 		}else if(number==Constant.MAIN){
 			controller.switchUI(number);
 		}else{
 			showResult("輸入錯誤，請重新輸入。");
-			display();
 		}
+		display();
 	}
 }
