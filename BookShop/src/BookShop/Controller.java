@@ -35,6 +35,9 @@ public class Controller {
 		return new String(dateformat.format(new Date()));
 	}
 	public void switchUI(int UI){
+		if(checkLogin()!=true && UI!=Constant.REGISTER){
+			lastUI.showResult("請先進行 註冊/登入 後才能使用其他功能");
+		}
 		switch(UI){
 			case Constant.MAIN:
 				lastUI = new MainUI(this);
@@ -55,6 +58,16 @@ public class Controller {
 				lastUI.showResult("輸入的數字為未定義的功能，請重新輸入。");
 		}
 		lastUI.display();
+	}
+	public Boolean login(String account,String password){
+		Boolean result = false;
+		result = user_controller.login(account, password);
+		return result;
+	}
+	public Boolean register(String account,String password,String phonenumber){
+		Boolean result = false;
+		result = user_controller.register(account, password, phonenumber);
+		return result;
 	}
 	public Boolean checkLogin(){
 		return login;
