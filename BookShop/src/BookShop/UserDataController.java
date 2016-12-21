@@ -12,27 +12,33 @@ public class UserDataController {
 	public UserDataController(String filename,Controller controller){
 		this.controller = controller;
 		handler = new UserDataHandler(filename);
+		loadUser();
 	}
 	public Boolean login (String account,String password){ // need account and password to login
 		Boolean result = false;
+		//System.out.println("開始驗證密碼："+user.size()); // Login Test
 		for(int i=0;i<user.size();i++){
+			//System.out.println("開始驗證密碼："+user.get(i).getAccount()); // Login Test
 			if(user.get(i).getAccount().equals(account)){
 				if(user.get(i).comparePassword(password)){
-					// login success
+					result = true;
+					break;
 				}
 			}
 		}
 		return result;
 	}
-	public Boolean register (String account,String password,String phonenumber){ // need account and password to register an user data
+	public void register(String account,String password,String phonenumber){ // need account and password to register an user data
+		user.add(new UserData(account,password,phonenumber));
+	}
+	public Boolean checkAccount(String account){
 		Boolean result = false;
 		for(int i=0;i<user.size();i++){ // check if the account is used
 			if(user.get(i).getAccount().equals(account)){
-				return result;
+				result = true;
+				break;
 			}
 		}
-		user.add(new UserData(account,password,phonenumber));
-		result = true;
 		return result;
 	}
 	public Boolean modifyPhone (String account,String phonenumber){ // modify User contact info
@@ -51,11 +57,13 @@ public class UserDataController {
 	}
 	private void loadUser(){ // load User data from last status 
 		String line = handler.readLine();
+		//System.out.println("載入資料："+line); // Load Test
 		while(line!=null){
 			StringTokenizer token = new StringTokenizer(line,Constant.DELIMITER);
-			String account = token.nextToken();
-			String password = token.nextToken();
+			String account = token.nextToken().trim();
+			String password = token.nextToken().trim();
 			String phone = token.nextToken().trim();
+			//System.out.println("Token："+account+","+password+","+phone); // Load Test
 			user.add(new UserData(account,password,phone));
 			line = handler.readLine();
 		}

@@ -24,6 +24,7 @@ public class UI {
 		String input = null;
 		Scanner scanner = new Scanner(System.in);
 		input = scanner.next();
+		scanner.reset();
 		return input;
 	}
 	public void showResult(String result){

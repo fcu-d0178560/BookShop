@@ -15,19 +15,26 @@ public class OrderUI extends UI {
 		}catch(NumberFormatException e){ number = 999; }
 		
 		if(number==1){
+			controller.checkLogin();
 			controller.checkAcceptOrder();
 		}else if(number==2){
+			controller.checkLogin();
 			controller.checkPid();
 		}else if(number==3){
+			controller.checkLogin();
 			controller.checkPid();
 			showResult("請輸入要接受的訂單編號：");
 			String oid = getInput().trim();
 			controller.acceptOrder(oid);
+		}else if(number==4){
+			controller.end();
 		}else if(number==Constant.MAIN){
+			controller.checkLogin();
 			controller.switchUI(number);
 		}else{
 			showResult("輸入錯誤，請重新輸入。");
 		}
+		
 		display();
 	}
 }

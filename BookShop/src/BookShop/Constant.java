@@ -16,4 +16,5 @@ public interface Constant {
 	int SELL = 2;
 	int REGISTER = 3;
 	int CONTACTINFO = 4;
+	int END = 5;
 } 

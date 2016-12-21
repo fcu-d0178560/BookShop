@@ -13,20 +13,23 @@ public class ProductController {
 	public ProductController(String filename,Controller controller){
 		this.controller = controller;
 		handler = new ProductHandler(filename);
+		loadProduct();
 	}
 	public String getSerial(){
 		String serial = Integer.toString(this.serial);
 		this.serial += 1;
 		return serial;
 	}
-	public void showProduct(){
-		controller.showResult("商品訊息：");
+	public int showProduct(){
+		int count = 0;
 		for(int i=0;i<product.size();i++){
 			String pid = product.get(i).getPid();
 			String pname = product.get(i).getPname();
 			String result = Constant.DELIMITER+"PID:"+pid+Constant.DELIMITER+"商品名稱:"+pname+Constant.DELIMITER;
 			controller.showResult(result);
 		}
+		if(count==0) controller.showResult("目前沒有登錄任何書籍！");
+		return count;
 	}
 	public void addProduct(String account,String pname){ // need account and product name to create product
 		String pid = controller.getTime()+getSerial();
@@ -40,23 +43,30 @@ public class ProductController {
 			}
 		}
 	}
-	public void checkProduct(String account){
-		controller.showResult("商品訊息：");
+	public int checkProduct(String account){
+		int count = 0;
 		for(int i=0;i<product.size();i++){
 			if(product.get(i).getAccount().equals(account)){
 				String pid = product.get(i).getPid();
 				String pname = product.get(i).getPname();
 				controller.showResult(Constant.DELIMITER+"商品編號："+pid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER);
+				count++;
 			}
 		}
+		if(count==0) controller.showResult("目前沒有任何登錄書籍！");
+		return count;
 	}
 	public void checkOrder(String account){
-		controller.showResult("訂單資訊：");
+		int count = 0;
 		for(int i=0;i<product.size();i++){
 			if(product.get(i).getAccount().equals(account)){
 				String pid = product.get(i).getPid();
 				controller.checkOrder(pid);
+				count++;
 			}
+		}
+		if(count==0){
+			controller.showResult("目前沒有任何登錄書籍！");
 		}
 	}
 	private void loadProduct(){ // load product data from last status

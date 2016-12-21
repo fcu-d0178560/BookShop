@@ -40,6 +40,7 @@ public class UserData{
 	}
 	public Boolean comparePassword(String password){
 		Boolean result = false;
+		//System.out.println("∂}©l≈Á√“±KΩX°G"+getPassword()); // Login Test
 		if(getPassword().equals(password)) result = true;
 		return result;
 	}

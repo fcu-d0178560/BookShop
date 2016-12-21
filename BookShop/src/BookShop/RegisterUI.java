@@ -18,18 +18,31 @@ public class RegisterUI extends UI {
 		if(number==1){
 			showResult("請輸入帳號：");
 			String account = getInput().trim();
-			showResult("請輸入密碼：");
-			String password = getInput().trim();
-			result = controller.login(account,password);
+			if(controller.checkAccount(account)){
+				showResult("請輸入密碼：");
+				String password = getInput().trim();
+				if(!controller.login(account,password)){
+					showResult("登入失敗，密碼錯誤！");
+				}else{
+					showResult("登入成功！");
+					controller.switchUI(Constant.MAIN);
+				}
+			}else{ showResult("輸入的帳號不存在！"); }
+
 		}else if(number==2){
 			showResult("請輸入帳號：");
 			String account = getInput().trim();
-			showResult("請輸入密碼：");
-			String password = getInput().trim();
-			showResult("請輸入手機號碼：");
-			String phonenumber = getInput().trim();
-			result = controller.register(account,password,phonenumber);
+			if(!controller.checkAccount(account)){
+				showResult("請輸入密碼：");
+				String password = getInput().trim();
+				showResult("請輸入手機號碼：");
+				String phonenumber = getInput().trim();
+				controller.register(account,password,phonenumber);
+				showResult("註冊成功！");
+			}else{ showResult("帳號已被註冊過！"); }
+
 		}else if(number==3){
+			controller.checkLogin();
 			showResult("請輸入新的手機號碼：");
 			String phone = getInput().trim();
 			result = controller.modifyPhone(phone);
@@ -40,10 +53,6 @@ public class RegisterUI extends UI {
 			showResult("輸入錯誤，請重新輸入。");
 		}
 		
-		if(result==true){
-			controller.switchUI(Constant.MAIN);
-		}else{
-			display();
-		}
+		display();
 	}
 }

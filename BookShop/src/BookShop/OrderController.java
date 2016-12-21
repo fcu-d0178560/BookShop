@@ -14,6 +14,7 @@ public class OrderController {
 	public OrderController(String filename,Controller controller){
 		this.controller = controller;
 		handler = new OrderHandler(filename);
+		loadOrder();
 	}
 	public String getSerial(){
 		String serial = Integer.toString(this.serial);
@@ -35,15 +36,19 @@ public class OrderController {
 		}
 	}
 	public void showOrder (String account){	// show order
-		controller.showResult("訂單訊息：");
+		int count = 0;
 		for(int i=0;i<order.size();i++){
 			if(order.get(i).getAccount().equals(account)){
 				if(order.get(i).getAccount().equals(account)){
 					String oid = order.get(i).getOid();
 					String pname = controller.getPname(acceptorder.get(i).getPid());
 					controller.showResult(Constant.DELIMITER+"訂單編號："+oid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER);
+					count++;
 				}
 			}
+		}
+		if(count==0){
+			controller.showResult("目前沒有任何訂單可以顯示！");
 		}
 	}
 	public void checkOrder(String pid){
@@ -65,14 +70,16 @@ public class OrderController {
 		}
 	}
 	public void checkAcceptOrder(String account){ // check if there is order belong this account
-		controller.showResult("交易資訊：");
+		int count = 0;
 		for(int i=0;i<acceptorder.size();i++){
 			if(acceptorder.get(i).getAccount().equals(account)){
 				String pname = controller.getPname(acceptorder.get(i).getPid());
 				String phone = controller.getPhone(acceptorder.get(i).getAccount());
 				controller.showResult(Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER+"連絡資訊："+phone+Constant.DELIMITER);
+				count++;
 			}
 		}
+		controller.showResult("目前沒有任何交易！");
 	}
 	public Order getOrder(String oid){
 		Order target = null;

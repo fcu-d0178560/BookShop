@@ -35,9 +35,6 @@ public class Controller {
 		return new String(dateformat.format(new Date()));
 	}
 	public void switchUI(int UI){
-		if(checkLogin()!=true && UI!=Constant.REGISTER){
-			lastUI.showResult("請先進行 註冊/登入 後才能使用其他功能");
-		}
 		switch(UI){
 			case Constant.MAIN:
 				lastUI = new MainUI(this);
@@ -54,6 +51,8 @@ public class Controller {
 			case Constant.CONTACTINFO:
 				lastUI = new OrderUI(this);
 				break;
+			case Constant.END:
+				end();
 			default:
 				lastUI.showResult("輸入的數字為未定義的功能，請重新輸入。");
 		}
@@ -102,45 +101,49 @@ public class Controller {
 	}
 	public void cancelOrder(String oid){
 		Order order = order_controller.getOrder(oid);
-		if(order!=null){
-			order_controller.cancelOrder(oid);
-		}else{
-			lastUI.showResult("欲取消的訂單編號不存在！");
-		}
+		if(order!=null) order_controller.cancelOrder(oid);
+		else lastUI.showResult("欲取消的訂單編號不存在！");
 	}
-	public void showProduct(){
-		product_controller.showProduct();
+	public int showProduct(){
+		return product_controller.showProduct();
 	}
 	public void addProduct(String pname){
 		product_controller.addProduct(account, pname);
 	}
-	public void checkProduct(){
-		product_controller.checkProduct(account);
+	public void deleteProduct(String pid){
+		Product product = product_controller.getProduct(pid);
+		if(product!=null) product_controller.deleteProduct(pid);
+		else lastUI.showResult("欲刪除的書籍不存在！");
+	}
+	public int checkProduct(){
+		return product_controller.checkProduct(account);
 	}
 
+	public Boolean checkAccount(String account){
+		Boolean result = user_controller.checkAccount(account);
+		return result;
+	}
 	public Boolean login(String account,String password){
-		Boolean result = false;
-		result = user_controller.login(account, password);
+		Boolean result = user_controller.login(account, password);
 		if(result==true) this.account = account;
 		return result;
 	}
-	public Boolean register(String account,String password,String phonenumber){
-		Boolean result = false;
-		result = user_controller.register(account, password, phonenumber);
-		if(result==true) this.account = account;
-		return result;
+	public void register(String account,String password,String phonenumber){
+		user_controller.register(account, password, phonenumber);
 	}
 	public Boolean modifyPhone(String phonenumber){
 		return user_controller.modifyPhone(account,phonenumber);
 	}
-	public Boolean checkLogin(){
-		Boolean result = false;
-		if(account!=null) result = true;
-		return result;
+	public void checkLogin(){
+		if(account==null){
+			lastUI.showResult("請先進行  註冊/登入  後才能使用其他功能！");
+			switchUI(Constant.REGISTER);
+		}
 	}
 	public void end(){
 		user_controller.end();
 		order_controller.end();
 		product_controller.end();
+		System.exit(0);
 	}
 }

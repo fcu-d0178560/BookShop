@@ -33,6 +33,8 @@ public class ProductHandler {
 		try {
 			outputstream = new FileWriter(filename);
 			outputstream.write(file);
+			outputstream.close();
+			inputstream.close();
 		} catch (IOException e) { e.printStackTrace(); }
 	}
 }
