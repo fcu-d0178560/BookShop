@@ -9,7 +9,7 @@ public class RegisterUI extends UI {
 		Boolean result = false;
 		int number = 0;
 		showResult("請選擇要使用的功能：");
-		showResult("1.登入 2.註冊 3.修改聯絡資訊 0.回上頁");
+		showResult("1.登入 2.註冊 3.修改聯絡資訊 4.離開 0.回上頁");
 		String input = getInput().trim();
 		try{
 			number = Integer.valueOf(input);
@@ -47,6 +47,8 @@ public class RegisterUI extends UI {
 			String phone = getInput().trim();
 			result = controller.modifyPhone(phone);
 			if(result==false) showResult("修改聯絡資訊失敗，與儲存資訊相同。");
+		}else if(number==4){
+			controller.end();
 		}else if(number==Constant.MAIN){
 			controller.switchUI(number);
 		}else{

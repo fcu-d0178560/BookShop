@@ -17,7 +17,6 @@ public class Controller {
 	public static void main(String[] args){
 		
 		Controller controller = new Controller();
-		
 		// System.out.println(controller.getTime()); Serial number test
 	}
 	
@@ -71,33 +70,32 @@ public class Controller {
 	public void showResult(String result){
 		lastUI.showResult(result);
 	}
-	public void showOrder(){
-		order_controller.showOrder(account);
+	public int showOrder(){
+		return order_controller.showOrder(account);
 	}
-	public void checkPid(){
-		product_controller.checkOrder(account);
+	public Boolean checkPid(){
+		return product_controller.checkOrder(account);
 	}
-	public void checkOrder(String pid){
-		order_controller.checkOrder(pid);
+	public Boolean checkOrder(String pid){
+		return order_controller.checkOrder(pid);
 	}
 	public void acceptOrder(String oid){
 		Order order = order_controller.getOrder(oid);
-		if(order!=null){
-			order_controller.acceptOrder(oid);
-		}else{
-			lastUI.showResult("欲接受的訂單編號不存在！");
-		}
+		if(order!=null)	order_controller.acceptOrder(oid);
+		else lastUI.showResult("欲接受的訂單編號不存在！");
 	}
-	public void checkAcceptOrder(){
-		order_controller.checkAcceptOrder(account);
+	public void finishOrder(String oid){
+		Order order = order_controller.getOrder(oid);
+		if(order!=null) order_controller.finishOrder(oid);
+		else lastUI.showResult("欲完成的交易訂單不存在！");
+	}
+	public int checkAcceptOrder(){
+		return order_controller.checkAcceptOrder(account);
 	}
 	public void order(String pid){
 		Product product = product_controller.getProduct(pid);
-		if(product!=null){
-			order_controller.order(account, pid);
-		}else{
-			lastUI.showResult("欲購買的書籍編號不存在！");
-		}
+		if(product!=null) order_controller.order(account, pid);
+		else lastUI.showResult("欲購買的書籍編號不存在！");
 	}
 	public void cancelOrder(String oid){
 		Order order = order_controller.getOrder(oid);
@@ -130,6 +128,7 @@ public class Controller {
 	}
 	public void register(String account,String password,String phonenumber){
 		user_controller.register(account, password, phonenumber);
+		this.account = account;
 	}
 	public Boolean modifyPhone(String phonenumber){
 		return user_controller.modifyPhone(account,phonenumber);

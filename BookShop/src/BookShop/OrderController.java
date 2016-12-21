@@ -35,31 +35,33 @@ public class OrderController {
 			}
 		}
 	}
-	public void showOrder (String account){	// show order
+	public int showOrder (String account){	// show order
 		int count = 0;
 		for(int i=0;i<order.size();i++){
 			if(order.get(i).getAccount().equals(account)){
 				if(order.get(i).getAccount().equals(account)){
 					String oid = order.get(i).getOid();
-					String pname = controller.getPname(acceptorder.get(i).getPid());
+					String pname = controller.getPname(order.get(i).getPid());
 					controller.showResult(Constant.DELIMITER+"訂單編號："+oid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER);
 					count++;
 				}
 			}
 		}
-		if(count==0){
-			controller.showResult("目前沒有任何訂單可以顯示！");
-		}
+		if(count==0) controller.showResult("目前沒有任何訂單可以顯示！");
+		return count;
 	}
-	public void checkOrder(String pid){
+	public Boolean checkOrder(String pid){
+		Boolean result = false;
 		for(int i=0;i<order.size();i++){
 			if(order.get(i).getPid().equals(pid)){
 				String oid = order.get(i).getOid();
 				String pname = controller.getPname(pid);
 				String account = order.get(i).getAccount();
 				controller.showResult(Constant.DELIMITER+"訂單編號："+oid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER+"訂貨人："+account+Constant.DELIMITER);
+				result = true;
 			}
 		}
+		return result;
 	}
 	public void cancelOrder(String oid){
 		for(int i=0;i<order.size();i++){
@@ -69,17 +71,19 @@ public class OrderController {
 			}
 		}
 	}
-	public void checkAcceptOrder(String account){ // check if there is order belong this account
+	public int checkAcceptOrder(String account){ // check if there is order belong this account
 		int count = 0;
 		for(int i=0;i<acceptorder.size();i++){
 			if(acceptorder.get(i).getAccount().equals(account)){
+				String oid = acceptorder.get(i).getOid();
 				String pname = controller.getPname(acceptorder.get(i).getPid());
 				String phone = controller.getPhone(acceptorder.get(i).getAccount());
-				controller.showResult(Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER+"連絡資訊："+phone+Constant.DELIMITER);
+				controller.showResult(Constant.DELIMITER+"交易編號："+oid+Constant.DELIMITER+"書籍名稱："+pname+Constant.DELIMITER+"連絡資訊："+phone+Constant.DELIMITER);
 				count++;
 			}
 		}
-		controller.showResult("目前沒有任何交易！");
+		if(count==0) controller.showResult("目前沒有任何交易！");
+		return count;
 	}
 	public Order getOrder(String oid){
 		Order target = null;
@@ -91,7 +95,7 @@ public class OrderController {
 		}
 		for(int i=0;i<acceptorder.size();i++){
 			if(acceptorder.get(i).getOid().equals(oid)){
-				target = order.get(i);
+				target = acceptorder.get(i);
 				return target;
 			}
 		}

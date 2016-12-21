@@ -25,8 +25,9 @@ public class ProductController {
 		for(int i=0;i<product.size();i++){
 			String pid = product.get(i).getPid();
 			String pname = product.get(i).getPname();
-			String result = Constant.DELIMITER+"PID:"+pid+Constant.DELIMITER+"商品名稱:"+pname+Constant.DELIMITER;
+			String result = Constant.DELIMITER+"書籍編號:"+pid+Constant.DELIMITER+"書籍名稱:"+pname+Constant.DELIMITER;
 			controller.showResult(result);
+			count++;
 		}
 		if(count==0) controller.showResult("目前沒有登錄任何書籍！");
 		return count;
@@ -49,25 +50,23 @@ public class ProductController {
 			if(product.get(i).getAccount().equals(account)){
 				String pid = product.get(i).getPid();
 				String pname = product.get(i).getPname();
-				controller.showResult(Constant.DELIMITER+"商品編號："+pid+Constant.DELIMITER+"商品名稱："+pname+Constant.DELIMITER);
+				controller.showResult(Constant.DELIMITER+"書籍編號："+pid+Constant.DELIMITER+"書籍名稱："+pname+Constant.DELIMITER);
 				count++;
 			}
 		}
 		if(count==0) controller.showResult("目前沒有任何登錄書籍！");
 		return count;
 	}
-	public void checkOrder(String account){
-		int count = 0;
+	public Boolean checkOrder(String account){
+		Boolean result = false;
 		for(int i=0;i<product.size();i++){
 			if(product.get(i).getAccount().equals(account)){
 				String pid = product.get(i).getPid();
-				controller.checkOrder(pid);
-				count++;
+				if(controller.checkOrder(pid)) result = true;
 			}
 		}
-		if(count==0){
-			controller.showResult("目前沒有任何登錄書籍！");
-		}
+		if(!result) controller.showResult("目前沒有任何訂單資料！");
+		return result;
 	}
 	private void loadProduct(){ // load product data from last status
 		String line = handler.readLine();
